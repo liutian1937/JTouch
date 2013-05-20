@@ -1,3 +1,3 @@
-touch gestures with javascript<br/>
-niumowang.org
-github
+jTouch 
+A javascript library about touch gesture .<br/>
+

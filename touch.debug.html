@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html debug="true">
 <head>
   <title>Javascript Touch Event</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name = "viewport" content = "width = device-width">
   <meta name="viewport" content="width=device-width; initial-scale=1.0">
   <link rel="stylesheet" text="text/css" href="css/style.css" />
-
+	<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
   <script src="jTouch-1.0/jTouch.js" type="text/javascript"></script>
   <meta name="apple-mobile-web-app-capable" content="yes" />   
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -85,7 +85,7 @@ var Touches = new jTouch(objTouch);
 	}).on('tap',function(evt,data){
 		//单击
 		if(evt.target.tagName.toLowerCase() == 'img'){
-			Pic.show("http://www.bjdt.cn/Uploadfiles/imgs/20110303/fengjin/003.jpg");//展示图片，路径自定义
+			Pic.show("http://ww1.sinaimg.cn/large/7ef330ffjw1dv34i00sxdj.jpg");//展示图片，路径自定义
 		}
 		console.log('tap');
 	}).on('doubletap',function(evt,data){
@@ -143,6 +143,7 @@ var Touches = new jTouch(objTouch);
 			Pic.scale(data['scale']);
 		}
 	});
+
 </script>
 </body>
 </html>

@@ -39,16 +39,33 @@ var ImgSrc;
 			_this.mark.style.display = 'block';
 			_this.wrap.style.display = 'table';
 			if(url != ImgSrc){
-				_this.wrap.innerHTML = '<div class="ImgWrap"><img src="'+url+'"></div>';
-				ImgSrc = url;
+				/*
+					如果已经加载过图片路径，不重复加载
+					下面的操作需要在图片加载完成后进行
+				*/
+				var img = new Image();
+				img.src = url;
+				img.onload = function(){
+					if (img.complete == true){
+						_this.wrap.innerHTML = '<div class="ImgWrap"><img src="'+url+'"></div>';
+						ImgSrc = url;
+						_this.imgParent = _this.wrap.getElementsByTagName('div')[0];//获取图像的父级，用来做translate操作
+						_this.img = _this.imgParent.getElementsByTagName('img')[0];//图像用来做pinch操作
+			
+						_this.imgWidth = _this.img.offsetWidth; //获取原图的宽高
+						_this.imgHeight = _this.img.offsetHeight;
+						_this.resize();
+					}
+				}
+				
+			}else{
+				_this.imgParent = _this.wrap.getElementsByTagName('div')[0];
+				_this.img = _this.imgParent.getElementsByTagName('img')[0];
+				_this.imgWidth = _this.img.offsetWidth;//获取原图的宽高
+				_this.imgHeight = _this.img.offsetHeight;
+				_this.resize();
 			};
-			_this.imgParent = _this.wrap.getElementsByTagName('div')[0];
-			_this.img = _this.imgParent.getElementsByTagName('img')[0];
 			
-			_this.imgWidth = _this.img.offsetWidth;
-			_this.imgHeight = _this.img.offsetHeight;
-			
-			_this.resize();
 			_this.LastScale = 1;
 			
 			_this.LastPerX = _this.LastPerY = 0; //滚动范围内，一直变化的百分比
@@ -73,7 +90,9 @@ var ImgSrc;
 		},
 		scale:function(num,end){
 			var _this = this;
-			
+			if(!_this.img){
+				return false;
+			};
 			//禁止move事件发生
 			_this.moved = false;
 			if(_this.timer){

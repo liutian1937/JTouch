@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html debug="true">
+<html>
 <head>
   <title>Javascript Touch Event</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name = "viewport" content = "width = device-width">
   <meta name="viewport" content="width=device-width; initial-scale=1.0">
 
-  <script src="js/gesture.js" type="text/javascript"></script>
+  <script src="jTouch-1.0/jTouch.js" type="text/javascript"></script>
   <script src="js/translate.js" type="text/javascript"></script>
 
   <style>
@@ -50,7 +50,7 @@ var Trans = new Translate({
 });
 
 var objTouch = document.getElementById('touch');
-var Touches = new Touch(objTouch);
+var Touches = new jTouch(objTouch);
 	
 Touches.on('flip',function(evt,data){
 	//轻拂
