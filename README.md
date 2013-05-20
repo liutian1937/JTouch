@@ -20,7 +20,7 @@ Touches.on('start',function(){
 		  console.log('end');
 	  });
 
-<strong>Or has params , example :</strong>
+
 Touches.on('flip',function(evt,data){
 	console.log('flip');
 	switch(data['direction']){
