@@ -20,5 +20,17 @@ Touches.on('start',function(){
 		  console.log('end');
 	  });
 
-<strong>OR</strong>
+<strong>Or has params , example :</strong>
+Touches.on('flip',function(evt,data){
+	console.log('flip');
+	switch(data['direction']){
+		case 'left' :
+			Trans.next();
+			break;
+		case 'right':
+			Trans.prev();
+			break;
+		}
+	});
+
 </pre>
