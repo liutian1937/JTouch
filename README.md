@@ -1,5 +1,4 @@
 <h1>jTouch</h1>
-<hr/>
 
 A javascript library for touch gestures .<br/>
 
@@ -11,3 +10,13 @@ A javascript library for touch gestures .<br/>
   <li>pinch,rotate</li>
 </ul>
 
+<h2>Usage</h2>
+<blockquote>
+var objTouch = document.getElementById('touch');//get object
+var Touches = new jTouch(objTouch);//init jTouch
+Touches.on('start',function(){
+		  console.log('start');
+	  }).on('end',function(){
+		  console.log('end');
+	  });
+<blockquote>
