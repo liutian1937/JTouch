@@ -1,7 +1,7 @@
 <h1>jTouch</h1>
 
 A javascript library for touch gestures .<br/>
-
+<img src="http://liutian1937.github.io/jTouch/images/jtouch.jpg" />
 <h2>Support gestures (One Or Two Fingers)</h2>
 <ul>
   <li>start,end</li>
