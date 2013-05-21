@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html debug="true">
+<head>
+  <title>Javascript Touch Event</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name = "viewport" content = "width = device-width">
+  <meta name="viewport" content="width=device-width; initial-scale=1.0">
+  <link rel="stylesheet" text="text/css" href="css/style.css" />
+	<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
+  <script src="jTouch-1.0/jTouch.js" type="text/javascript"></script>
+  <meta name="apple-mobile-web-app-capable" content="yes" />   
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <script src="js/common.js" type="text/javascript"></script>
+  <script src="js/translate.js" type="text/javascript"></script>
+  <script src="js/album.js" type="text/javascript"></script>
+</head>
+<body>
+
+
+<div id="touch">
+	<ul id="liWrap">
+		<li>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/app.png" /><br/>App Store</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/contact.png" /><br/>Contact</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/clock.png" /><br/>Clock</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/rss.png" /><br/>RSS</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/streetflow.png" /><br/>Street</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/stocks.png" /><br/>Stocks</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/pocketmoney.png" /><br/>Pocket</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/setting.png" /><br/>Setting</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/music.png" /><br/>Music</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/mail.png" /><br/>Mail</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/maps.png" /><br/>Maps</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/movie.png" /><br/>Movies</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/phone.png" /><br/>Phone</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/message.png" /><br/>Message</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/itunes.png" /><br/>iTunes</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/notes.png" /><br/>Note</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/youtube.png" /><br/>YouTube</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/phonezap.png" /><br/>PhoneZap</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/camera.png" /><br/>Camera</div>
+			
+		</li>
+		<li>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/calculator.png" /><br/>Calculator</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/snapture.png" /><br/>Snapture</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/safari.png" /><br/>Safari</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/im.png" /><br/>IM</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/weather.png" /><br/>Weather</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/poof.png" /><br/>Poof</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/nes.png" /><br/>Nes</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/chess.png" /><br/>Chess</div>
+		</li>
+		<li>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/wetools.png" /><br/>Wetools</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/stack.png" /><br/>Stack</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/pool.png" /><br/>Pool</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/videos.png" /><br/>Videos</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/finder.png" /><br/>Finder</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/photos.png" /><br/>Photos</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/flickr.png" /><br/>Flickr</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/ipod.png" /><br/>Ipod</div>
+			<div class="item"><span class="delete"><a href="#"></a></span><img src="icons/terminal.png" /><br/>Terminal</div>
+		</li>
+	</ul>
+	
+</div>
+
+
+<script>
+//Translate Init
+var Trans = new Translate({
+	obj:document.getElementById('liWrap'),
+	circle:true
+});
+
+var objTouch = document.getElementById('touch');
+
+var Touches = new jTouch(objTouch);
+
+	Touches.on('start',function(){
+		console.log('start');
+	}).on('end',function(){
+		console.log('end');
+	}).on('tap',function(evt,data){
+		//单击
+		if(evt.target.tagName.toLowerCase() == 'img'){
+			Pic.show("http://ww1.sinaimg.cn/large/7ef330ffjw1dv34i00sxdj.jpg");//展示图片，路径自定义
+		}
+		console.log('tap');
+	}).on('doubletap',function(evt,data){
+		//双击
+		removeClass(objTouch,'shake');
+		console.log('double tap');
+	}).on('longtap',function(evt,data){
+		//长按
+		if(evt.target.tagName.toLowerCase() == 'img'){
+			var target = evt.target;
+			addClass(objTouch,'shake');
+		}
+		console.log('long tap');
+	}).on('hold',function(evt,data){
+		return false;
+	}).on('flip',function(evt,data){
+		//轻拂
+		console.log('flip');
+		switch(data['direction']){
+			case 'left' :
+				Trans.next();
+				break;
+			case 'right':
+				Trans.prev();
+				break;
+		}
+	}).on('swipe',function(evt,data){
+		console.log('swipe');
+		if(data['direction'] == 'left' || data['direction'] == 'right'){
+			Trans.offset(data['x']);
+		}else if(data['direction'] == 'up' || data['direction'] == 'down'){
+			//纵向移动
+		}
+		if(data['status'] == 'end'){
+			Trans.end(data['x']);
+		}
+	});
+	
+	
+	var Pic = new Album(); //实例化Album
+	var imgTouch = document.getElementById('ImgWrap');
+	var newTouch = new jTouch(imgTouch);
+	newTouch.on('swipe',function(evt,data){
+		Pic.translate(data['x'],data['y']);
+		if(data['status'] == 'end'){
+			Pic.translate(data['x'],data['y'],'end');
+		}
+	}).on('flip',function(evt,data){
+		//flip效果不完善，需要触发end，否则会闪动
+		Pic.end();
+	}).on('pinch',function(evt,data){
+		if(data['status'] == 'end'){
+			Pic.scale(data['scale'],true);
+		}else{
+			Pic.scale(data['scale']);
+		}
+	});
+
+</script>
+</body>
+</html>
