@@ -37,6 +37,7 @@ Touches.on('flip',function(evt,data){
 
 <h2>Demo</h2>
 
+You can check it on your tablet device . (ipad,surface..)
 <blockquote>
 <a href="http://liutian1937.github.io/jTouch/touch.html" target="_blank">http://liutian1937.github.io/jTouch/touch.html</a>
 
