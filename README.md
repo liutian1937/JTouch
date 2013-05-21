@@ -34,3 +34,19 @@ Touches.on('flip',function(evt,data){
 	});
 
 </pre>
+
+<h2>Demo</h2>
+
+<blockquote>
+<a href="http://liutian1937.github.io/jTouch/touch.html" target="_blank">http://liutian1937.github.io/jTouch/touch.html</a>
+
+Need translate.js album.js
+</blockquote>
+
+<blockquote>
+<a href="http://liutian1937.github.io/jTouch/carousel.html" target="_blank">http://liutian1937.github.io/jTouch/carousel.html</a>
+
+Need translate.js
+</blockquote>
+
+
