@@ -1,0 +1,115 @@
+html,body{width:100%;height:100%;margin:0;padding:0;}
+body{background:#999;background-image:url(../images/bg.jpg);background-position:top center;background-size:auto 100%;overflow:hidden;}
+ul,li{list-style:none;margin:0;padding:0;}
+
+/*carousel style*/
+#touch{width:100%;height:100%;overflow:hidden;}
+#touch ul{height:100%;}
+#touch li{height:100%;float:left;text-align:center;}
+
+#circle{position:absolute;bottom:10px;width:100%;height:20px;line-height:20px;z-index:200;text-align:center;}
+#circle a{width:8px;height:8px;border-radius:8px;background:#636363;display:inline-block;margin:0px 5px;box-shadow:0px 0px 1px rgba(0,0,0,0.5);-webkit-transition:all 0.5s linear;font-size:0;}
+#circle a.cur{background:#fff;}
+.animate {-webkit-transition: all .3s linear;transition: all .3s linear;}
+
+
+/*each item style*/
+#touch .item{display:inline-block;text-align:center;font-size:14px;font-weight:bold;color:#fff;float:left;line-height:20px;text-shadow:0px 1px 1px #333;position:relative;-webkit-transition: all .3s linear;}
+#touch .item{width:20%;height:14%;margin-top:5%;margin-bottom:1%;}
+#touch img{width:75px;height:75px;}
+
+/*横向*/
+@media only screen and (max-device-width: 1024px) and (orientation:portrait){
+   #touch .item{width:25%;}
+}
+/*纵向*/
+@media only screen and (max-device-width: 1024px) and (orientation:landscape) {
+   #touch .item{width:20%;}
+}
+
+
+/* delete button*/
+.delete {
+    position:absolute;
+    z-index:1;
+    overflow:hidden;
+	width:18px;
+	height:18px;
+	border-radius:18px;
+	border:2px solid #fff;
+	box-shadow:0px 0px 1px rgba(0,0,0,.3);
+	top:-8px;
+	left:50%;
+	margin-left:-45px;
+	-webkit-transition: all .3s linear;
+	transition: all .3s linear;
+	opacity:0;
+}
+.delete:before,
+.delete:after,
+.delete a:before,
+.delete a:after {
+    content:"";
+    position:absolute;
+    top:50%;
+    left:0;
+}
+.delete a:before,
+.delete a:after {
+    margin:-9px 0 0;
+    background:#333;
+}
+.delete a:before {
+    width:18px;
+    height:18px;
+    border-radius:18px;
+}
+.delete a:after {
+    left:4px;
+    width:10px;
+    height:2px;
+	border-radius:2px;
+    margin-top:-1px;
+    background:#fff;
+    -webkit-transform:rotate(45deg);
+}
+
+.delete:before {
+    z-index:10;
+    left:8px;
+    width:2px;
+    height:10px;
+	border-radius:2px;
+    margin-top:-5px;
+    background:#fff;
+    -webkit-transform:rotate(45deg);
+}
+/*shake animate*/
+.shake .item{
+	-webkit-transform-style: preserve-3d;
+	-webkit-animation-name: shake;
+	-webkit-animation-duration: 0.25s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear; 
+}
+/* 定义要调用的动画 */
+@-webkit-keyframes shake {
+	0%{ -webkit-transform: rotate(0deg);}
+	12.5%{ -webkit-transform: rotate(1.5deg);}
+	25%{ -webkit-transform: rotate(3deg);}
+	37.5%{ -webkit-transform: rotate(1.5deg);}
+	50% { -webkit-transform: rotate(0deg); }
+	62.5%{ -webkit-transform: rotate(-1.5deg);}
+	75% { -webkit-transform: rotate(-3deg); }
+	87.5%{ -webkit-transform: rotate(-1.5deg);}
+	100% { -webkit-transform: rotate(0deg); } 
+}
+/*active animate*/
+.shake .delete{opacity:1;}
+
+/*album style*/
+#mark{width:100%;height:100%;background:#000;position:absolute;z-index:100;display:none;top:0;left:0;opacity:0.6;-webkit-transition:all 0.5s linear;overflow:hidden;}
+#ImgWrap{width:100%;height:100%;position:absolute;overflow:hidden;top:0;left:0;z-index:200;text-align:center;display:none;}
+#ImgWrap .ImgWrap{width:100%;height:100%;vertical-align:middle;text-align:center;display:table-cell;position:relative;-webkit-transition:all 0.1s linear;font-size:0px;}
+#ImgWrap img{-webkit-transition:all 0.1s linear;margin:0;padding:0;}
+#ImgWrap .border{box-shadow:0px 0px 20px rgba(255,255,255,0.8);}
