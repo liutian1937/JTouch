@@ -6,7 +6,7 @@
   <meta name = "viewport" content = "width = device-width">
   <meta name="viewport" content="width=device-width; initial-scale=1.0">
 
-  <script src="jTouch-1.0/jTouch.min.js" type="text/javascript"></script>
+  <script src="jTouch-2.0/jTouch.js" type="text/javascript"></script>
   <script src="js/translate.js" type="text/javascript"></script>
 
   <style>
@@ -50,7 +50,7 @@ var Trans = new Translate({
 });
 
 var objTouch = document.getElementById('touch');
-var Touches = new jTouch(objTouch);
+var Touches = jTouch(objTouch);
 	
 Touches.on('flip',function(evt,data){
 	//轻拂
