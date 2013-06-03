@@ -122,7 +122,11 @@ var Touches = new jTouch(objTouch);
 		if(data['status'] == 'end'){
 			Trans.end(data['x']);
 		}
-	});
+	}).on('mousewheel',function(evt,data){
+		if(!Trans.isAnimate){
+			(data['direction'] === 'down') ? Trans.next() : Trans.prev();
+		};
+	});;
 	
 	
 	var Pic = new Album(); //实例化Album

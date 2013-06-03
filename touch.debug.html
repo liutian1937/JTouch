@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html debug="true">
+<html debug="false">
 <head>
   <title>Javascript Touch Event</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name = "viewport" content = "width = device-width">
   <meta name="viewport" content="width=device-width; initial-scale=1.0">
   <link rel="stylesheet" text="text/css" href="css/style.css" />
-	<script type="text/javascript" src="http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js"></script>
-  <script src="jTouch-1.0/jTouch.js" type="text/javascript"></script>
+
+  <script src="jTouch-1.1/jTouch.js" type="text/javascript"></script>
   <meta name="apple-mobile-web-app-capable" content="yes" />   
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <script src="js/common.js" type="text/javascript"></script>
@@ -122,6 +122,10 @@ var Touches = new jTouch(objTouch);
 		if(data['status'] == 'end'){
 			Trans.end(data['x']);
 		}
+	}).on('mousewheel',function(evt,data){
+		if(!Trans.isAnimate){
+			(data['direction'] === 'down') ? Trans.next() : Trans.prev();
+		};
 	});
 	
 	
@@ -142,6 +146,8 @@ var Touches = new jTouch(objTouch);
 		}else{
 			Pic.scale(data['scale']);
 		}
+	}).on('mousewheel',function(evt,data){
+			(data['direction'] === 'down') ? Pic.scale(0.5,true) : Pic.scale(2,true) ;
 	});
 
 </script>

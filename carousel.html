@@ -52,52 +52,7 @@ var Trans = new Translate({
 var objTouch = document.getElementById('touch');
 var Touches = jTouch(objTouch);
 
-Touches.on('start',function(){
-		console.log('start');
-	}).on('end',function(){
-		console.log('end');
-	}).on('tap',function(evt,data){
-		//单击
-		if(evt.target.tagName.toLowerCase() == 'img'){
-			Pic.show("http://ww1.sinaimg.cn/large/7ef330ffjw1dv34i00sxdj.jpg");//展示图片，路径自定义
-		}
-		console.log('tap');
-	}).on('doubletap',function(evt,data){
-		//双击
-		console.log('double tap');
-	}).on('longtap',function(evt,data){
-		//长按
-		console.log('long tap');
-	}).on('hold',function(evt,data){
-		console.log('hold');
-		return false;
-	}).on('flip',function(evt,data){
-		//轻拂
-		console.log('flip');
-		switch(data['direction']){
-			case 'left' :
-				Trans.next();
-				break;
-			case 'right':
-				Trans.prev();
-				break;
-		}
-	}).on('swipe',function(evt,data){
-		//console.log('swipe');
-		if(data['direction'] == 'left' || data['direction'] == 'right'){
-			Trans.offset(data['x']);
-		}else if(data['direction'] == 'up' || data['direction'] == 'down'){
-			//纵向移动
-		}
-		if(data['status'] == 'end'){
-			Trans.end(data['x']);
-		}
-	}).on('mousewheel',function(evt,data){
-		if(!Trans.isAnimate){
-			(data['direction'] === 'down') ? Trans.next() : Trans.prev();
-		};
-	});
-/*	
+
 Touches.on('flip',function(evt,data){
 	//轻拂
 	switch(data['direction']){
@@ -115,7 +70,11 @@ Touches.on('flip',function(evt,data){
 	if(data['status'] == 'end'){
 		Trans.end(data['x']);
 	}
-});*/
+}).on('mousewheel',function(evt,data){
+		if(!Trans.isAnimate){
+			(data['direction'] === 'down') ? Trans.next() : Trans.prev();
+		};
+	});
 </script>
 </body>
 </html>
