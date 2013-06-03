@@ -7,6 +7,8 @@
 	var Translate = function(params){
 		var _this = this;
 		_this.params = params;
+		_this.timer = null;
+		_this.isAnimate = false;
 		_this.len = _this.current = _this.bothWidth = 0;
 		_this.obj =  _this.params.obj || document.getElementById('touch');
 		_this.items = _this.params.items || _this.obj.getElementsByTagName('li');
@@ -100,15 +102,27 @@
 	};
 	Translate.prototype.next = function(){
 		var _this = this;
+		_this.removeClass(_this.obj,'animate');
 		_this.addClass(_this.obj,'animate');
 		_this.current = (_this.current+1<_this.len)?_this.current+1:_this.len-1;
 		_this.move(-(100/_this.len)*_this.current);
+		_this.checkAnimate();
 	};
 	Translate.prototype.prev = function(){
 		var _this = this;
+		_this.removeClass(_this.obj,'animate');
 		_this.addClass(_this.obj,'animate');
 		_this.current = (_this.current > 1)?_this.current-1:0;
 		_this.move(-(100/_this.len)*_this.current);
+		_this.checkAnimate();
+	};
+	Translate.prototype.checkAnimate = function () {
+		var _this = this;
+		_this.isAnimate = true;
+		clearTimeout(_this.timer);
+		_this.timer = setTimeout(function(){
+			_this.isAnimate = false;
+		},500);
 	};
 	Translate.prototype.addClass=function(element,value){
 		if(!element.className){
@@ -117,14 +131,14 @@
 			var oValue = element.className;
 			oValue += " ";
 			oValue += value;
-			element.className = oValue;
+			element.className = oValue.replace(/(^\s*)|(\s*$)/g,"");
 		}
 	};
 	Translate.prototype.removeClass=function(element, className){
 		var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
 		if (element.className.match(reg)){
-			var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
-			element.className = element.className.replace(reg, ' ');
+			var reg = new RegExp('(\\s*)' + className + '(\\s*)');
+			element.className = element.className.replace(reg,' ');
 		}
 	};
 	function isWebkit(){

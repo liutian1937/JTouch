@@ -93,7 +93,9 @@ Touches.on('start',function(){
 			Trans.end(data['x']);
 		}
 	}).on('mousewheel',function(evt,data){
-		(data['direction'] === 'down') ? Trans.next() : Trans.prev();
+		if(!Trans.isAnimate){
+			(data['direction'] === 'down') ? Trans.next() : Trans.prev();
+		};
 	});
 /*	
 Touches.on('flip',function(evt,data){

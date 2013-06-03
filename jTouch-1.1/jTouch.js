@@ -49,7 +49,7 @@ ok8008@yeah.net
 			var _this = this;
 			clearTimeout(LongTimeout); //取消长按检测
 
-			_this.currentX = touch.pageX; //获取当前坐标值
+			_this.currentX = touch.pageX; //获取当前坐标值，pageX为到窗口的距离
 			_this.currentY = touch.pageY;
 
 			var offsetX = _this.currentX - _this.startX; //计算手指滑动的横向长度
@@ -233,13 +233,8 @@ ok8008@yeah.net
 		if(!(this instanceof Touch)){
 			return new Touch(obj);
 		};
-		
 		var _this = this;
 		_this.obj = obj || window;
-		_this.touches = {}; //touch对象哈希表
-		_this.typeFn = {}; //点击类型哈希表
-		_this.gesture = null;
-		_this.handleHash = {};
 		_this.init();
 	};
 	Touch.prototype = {
@@ -249,29 +244,24 @@ ok8008@yeah.net
 		},
 		init : function () {
 			var _this = this;
+			_this.touches = {}; //touch对象哈希表
+			_this.typeFn = {}; //点击类型哈希表
+			_this.gesture = null;
+			_this.handleHash = {};
 			if(isTouch()){
-				_this.obj.addEventListener('touchstart', function (event) {
-					_this.touchStart(event)
-				}, false);
-				_this.obj.addEventListener('touchmove', function (event) {
-					_this.touchMove(event)
-				}, false);
-				_this.obj.addEventListener('touchend', function (event) {
-					_this.touchEnd(event)
-				}, false);
-				_this.obj.addEventListener('touchcancel', function (event) {
-					_this.touchCancel(event)
-				}, false);
-
-				_this.obj.addEventListener('gesturestart', function (event) {
-					_this.gestureStart(event)
-				}, false);
-				_this.obj.addEventListener('gesturechange', function (event) {
-					_this.gestureChange(event)
-				}, false);
-				_this.obj.addEventListener('gestureend', function (event) {
-					_this.gestureEnd(event)
-				}, false);
+				//是否支持touch事件
+				_this.bind(_this.obj,'touchstart',_this.touchStart);
+				_this.bind(_this.obj,'touchmove',_this.touchMove);
+				_this.bind(_this.obj,'touchend',_this.touchEnd);
+				_this.bind(_this.obj,'touchcancel',_this.touchCancel);
+				_this.bind(_this.obj,'gesturestart',_this.gestureStart);
+				_this.bind(_this.obj,'gesturechange',_this.gestureChange);
+				_this.bind(_this.obj,'gestureend',_this.gestureEnd);
+			} else if(isPointer() || isMSPointer()) {
+				_this.bind(_this.obj,'MSPointerDown',_this.touchStart);
+				_this.bind(_this.obj,'MSPointerUp',_this.touchEnd);
+				_this.bind(_this.obj,'MSPointerMove',_this.touchMove);
+				_this.bind(_this.obj,'mousewheel',_this.mouseWheel);
 			} else {
 				var mousewheel = (document.hasOwnProperty('onmousewheel')) ? "mousewheel" : "DOMMouseScroll" ;
 				_this.bind(_this.obj,'mousedown',_this.touchStart);
@@ -406,7 +396,13 @@ ok8008@yeah.net
 					};
 				};
 			}
-		})()
+		})(),
+		destory : function () {
+			var _this = this, i;
+			for(i in _this.handleHash){
+				_this.unbind(_this.obj,i,_this.handleHash[i]);
+			}
+		}
 	};
 	
 	function isTouch() {
