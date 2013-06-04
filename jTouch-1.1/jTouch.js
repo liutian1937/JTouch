@@ -1,5 +1,5 @@
 ﻿/*
-jTouch v1.0  2013-05-20
+jTouch v1.1  2013-06-04
 https://github.com/liutian1937/jTouch
 ok8008@yeah.net
  */
@@ -46,14 +46,14 @@ ok8008@yeah.net
 		},
 		move : function (element,touch) {
 			//手指在对象上滑动
-			var _this = this;
+			var _this = this, offsetX, offsetY;
 			clearTimeout(LongTimeout); //取消长按检测
 
 			_this.currentX = touch.pageX; //获取当前坐标值，pageX为到窗口的距离
 			_this.currentY = touch.pageY;
 
-			var offsetX = _this.currentX - _this.startX; //计算手指滑动的横向长度
-			var offsetY = _this.currentY - _this.startY; //计算手指滑动的纵向长度
+			offsetX = _this.currentX - _this.startX; //计算手指滑动的横向长度
+			offsetY = _this.currentY - _this.startY; //计算手指滑动的纵向长度
 
 
 			/*
@@ -85,9 +85,9 @@ ok8008@yeah.net
 		},
 		process : function (element) {
 			//touch结束后执行
-			var _this = this;
-			var offsetX = _this.currentX - _this.startX; //移动横向距离
-			var offsetY = _this.currentY - _this.startY; //移动纵向距离
+			var _this = this, offsetX, offsetY;
+			offsetX = _this.currentX - _this.startX; //移动横向距离
+			offsetY = _this.currentY - _this.startY; //移动纵向距离
 
 			if (_this.eventType && _this.eventType !== 'swipe' && _this.eventType !== 'hold') {
 				return false;
@@ -144,11 +144,9 @@ ok8008@yeah.net
 		},
 		touchCallback : function (element, data) {
 			//回调函数
-			var _this = this;
-			var data = data || {};
+			var _this = this, data = data || {}, len = this.touch && this.evt.changedTouches.length ;
 			data['fingerNum'] = this.touch && _this.evt.changedTouches.length;
-			var len = this.touch && _this.evt.changedTouches.length;
-			if (!this.touch || _this.touch.identifier == _this.evt.changedTouches[len - 1].identifier) {
+			if (!_this.touch || _this.touch.identifier == _this.evt.changedTouches[len - 1].identifier) {
 				if (element.typeFn[_this.eventType])
 					element.typeFn[_this.eventType](_this.evt, data); //执行函数
 				TapTimes = 0;
@@ -163,14 +161,14 @@ ok8008@yeah.net
 	};
 	Gesture.prototype = {
 		change : function (event, element) {
-			var _this = this;
+			var _this = this, diffAngle, diffDistance;
 			if (element.objEvent.touches.length == 2) {
 				if (!_this.startData) {
 					_this.startData = _this.getData(element);
-				}
-				_this.currentData = _this.getData(element);
-				var diffAngle = _this.getAngle(_this.startData) - _this.getAngle(_this.currentData);
-				var diffDistance = _this.getDistance(_this.startData) - _this.getDistance(_this.currentData);
+				};
+				_this.currentData = _this.getData(element); //获取两根手指的坐标
+				diffAngle = _this.getAngle(_this.startData) - _this.getAngle(_this.currentData);
+				diffDistance = _this.getDistance(_this.startData) - _this.getDistance(_this.currentData);
 				console.log(Math.abs(diffDistance));
 				if (Math.abs(diffAngle) > 10 || _this.rotateActive) {
 					_this.eventType = 'rotate';
@@ -201,9 +199,7 @@ ok8008@yeah.net
 				element.typeFn[_this.eventType](event, data);
 		},
 		getData : function (element) {
-			var _this = this;
-			var touchList = element.objEvent.touches;
-			var ret = new Array();
+			var _this = this, touchList = element.objEvent.touches, ret = [];
 			for (var i = 0; i < touchList.length; i++) {
 				ret.push({
 					x : touchList[i].pageX,
@@ -213,9 +209,7 @@ ok8008@yeah.net
 			return ret;
 		},
 		getAngle : function (data) {
-			var A = data[0];
-			var B = data[1];
-			var angle = Math.atan((B.y - A.y) * -1 / (B.x - A.x)) * (180 / Math.PI);
+			var A = data[0], B = data[1], angle = Math.atan((B.y - A.y) * -1 / (B.x - A.x)) * (180 / Math.PI);
 			if (angle < 0) {
 				return angle + 180;
 			} else {
@@ -223,17 +217,16 @@ ok8008@yeah.net
 			}
 		},
 		getDistance : function (data) {
-			var A = data[0];
-			var B = data[1];
+			var A = data[0], B = data[1];
 			return Math.sqrt((B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y)) * -1;
 		}
 	};
 	
 	var Touch = function (obj) {
+		var _this = this;
 		if(!(this instanceof Touch)){
 			return new Touch(obj);
 		};
-		var _this = this;
 		_this.obj = obj || window;
 		_this.init();
 	};
@@ -271,8 +264,8 @@ ok8008@yeah.net
 			};
 		},
 		touchStart : function (event) {
-			event.preventDefault(); //阻止浏览器默认动作
 			var _this = this;
+			event.preventDefault(); //阻止浏览器默认动作
 			_this.touches = {};
 			_this.objEvent = event;
 			if(isTouch()){
@@ -287,8 +280,8 @@ ok8008@yeah.net
 			};
 		},
 		touchMove : function (event) {
-			event.preventDefault(); //阻止浏览器默认动作
 			var _this = this;
+			event.preventDefault(); //阻止浏览器默认动作
 			_this.objEvent = event;
 			if(isTouch()){
 				_this.touchLoop(event, function (touch) {
@@ -304,8 +297,8 @@ ok8008@yeah.net
 			}
 		},
 		touchEnd : function (event) {
-			event.preventDefault(); //阻止浏览器默认动作
 			var _this = this;
+			event.preventDefault(); //阻止浏览器默认动作
 			if(isTouch()){
 				_this.touchLoop(event, function (touch) {
 					_this.touchClear(touch, false);
@@ -319,8 +312,8 @@ ok8008@yeah.net
 			};
 		},
 		touchCancel : function (event) {
-			event.preventDefault(); //阻止浏览器默认动作
 			var _this = this;
+			event.preventDefault(); //阻止浏览器默认动作
 			_this.touchLoop(event, function (touch) {
 				_this.touchClear(touch, true);
 			});
@@ -330,9 +323,9 @@ ok8008@yeah.net
 			callback(event.changedTouches[len - 1]);
 		},
 		touchClear : function (touch, cancelled) {
-			var _this = this;
+			var _this = this, touchTarget;
 			if (!cancelled) {
-				var touchTarget = _this.touches[touch.identifier];
+				touchTarget = _this.touches[touch.identifier];
 				if (touchTarget) {
 					touchTarget.process(_this); //touchEnd时执行函数
 				};
@@ -347,13 +340,13 @@ ok8008@yeah.net
 			};
 		},
 		gestureStart : function (event) {
-			event.preventDefault(); //阻止浏览器默认动作
 			var _this = this;
+			event.preventDefault(); //阻止浏览器默认动作
 			_this.gesture = new Gesture(event, _this);
 		},
 		gestureChange : function (event) {
-			event.preventDefault();
 			var _this = this;
+			event.preventDefault();
 			_this.gesture.change(event, _this);
 		},
 		gestureEnd : function (event) {

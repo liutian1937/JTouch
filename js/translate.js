@@ -13,9 +13,11 @@
 		_this.obj =  _this.params.obj || document.getElementById('touch');
 		_this.items = _this.params.items || _this.obj.getElementsByTagName('li');
 		_this.circle = _this.params.circle || false;
-		window.addEventListener('orientationchange',function(){
-			_this.init();
-		},false);
+		if(window.addEventListener){
+			window.addEventListener('orientationchange',function(){
+				_this.init();
+			},false);
+		};
 		_this.init();
 	};
 	Translate.prototype.init=function(){
@@ -30,7 +32,7 @@
 		if(isWebkit()){
 			_this.obj.style.webkitTransform = 'translate3d(0,0,0)';
 		}else{
-			_this.obj.style.ransform = 'translate3d(0,0,0)';
+			_this.obj.style.transform = 'translate(0,0)';
 		}
 		if(_this.circle){
 			_this.circleShow();
@@ -76,7 +78,7 @@
 		if(isWebkit()){
 			_this.obj.style.webkitTransform = 'translate3d('+percent+'%,0,0)';
 		}else{
-			_this.obj.style.transform = 'translate3d('+percent+'%,0,0)';
+			_this.obj.style.transform = 'translate('+percent+'%,0)';
 		}
 		if(_this.circle){
 			_this.circleTurn(_this.current);
