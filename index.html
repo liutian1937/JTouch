@@ -31,7 +31,8 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h1>jTouch</h1>
+        <h1>
+<a name="jtouch" class="anchor" href="#jtouch"><span class="octicon octicon-link"></span></a>jTouch</h1>
 
 <p>
 A javascript library for touch gestures .<br>
@@ -41,18 +42,20 @@ Please check the demo on your tablet device .
 <p>
 <img src="http://liutian1937.github.io/jTouch/images/jtouch.jpg"></p>
 
-<h2>Support gestures (One Or Two Fingers)</h2>
+<h2>
+<a name="support-gestures-one-or-two-fingers" class="anchor" href="#support-gestures-one-or-two-fingers"><span class="octicon octicon-link"></span></a>Support gestures (One Or Two Fingers)</h2>
 
 <ul>
 <li>start,end</li>
   <li>tap,doubletap,longtap,hold</li>
   <li>flip,swipe</li>
   <li>pinch,rotate</li>
-</ul><h2>Usage</h2>
+</ul><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
 <pre>
 var objTouch = document.getElementById('touch');//get object
-var Touches = new jTouch(objTouch);//init jTouch
+var Touches = jTouch(objTouch);//init jTouch
 Touches.on('start',function(){
           console.log('start');
       }).on('end',function(){
@@ -74,7 +77,8 @@ Touches.on('flip',function(evt,data){
 
 </pre>
 
-<h2>Demo</h2>
+<h2>
+<a name="demo" class="anchor" href="#demo"><span class="octicon octicon-link"></span></a>Demo</h2>
 
 <p>You can check it on your tablet device . (ipad,surface..)</p>
 
