@@ -7,7 +7,26 @@ ok8008@yeah.net
 	var TapTimes = 0,
 	TapTimeout,
 	LongTimeout,
-	LastDirect = ''; //定义全局变量
+	LastDirect = '';
+	var Common = {
+		isTouch : function () {
+			return document.hasOwnProperty('ontouchstart');
+		},
+		isMSPointer : function () {
+			return window.navigator.msPointerEnabled;
+		},
+		isPointer : function () {
+			return window.navigator.pointerEnabled;
+		},
+		isIE : function () {
+			return (document.all) ? true : false;
+		},
+		isLeft : function (e){
+			if (document.all && e.button === 1 || e.button === 0){
+				return true;
+			};
+		}
+	};
  	var TouchAction = function (element,event,touch) {
 		/*
 		函数TouchAction主要针对点击，滑动的处理，手势变换用下面Gesture
@@ -236,12 +255,12 @@ ok8008@yeah.net
 			return this;
 		},
 		init : function () {
-			var _this = this;
+			var _this = this, mousewheel;
 			_this.touches = {}; //touch对象哈希表
 			_this.typeFn = {}; //点击类型哈希表
 			_this.gesture = null;
 			_this.handleHash = {};
-			if(isTouch()){
+			if(Common.isTouch()){
 				//是否支持touch事件
 				_this.bind(_this.obj,'touchstart',_this.touchStart);
 				_this.bind(_this.obj,'touchmove',_this.touchMove);
@@ -250,16 +269,15 @@ ok8008@yeah.net
 				_this.bind(_this.obj,'gesturestart',_this.gestureStart);
 				_this.bind(_this.obj,'gesturechange',_this.gestureChange);
 				_this.bind(_this.obj,'gestureend',_this.gestureEnd);
-			} else if(isPointer() || isMSPointer()) {
-				_this.bind(_this.obj,'MSPointerDown',_this.touchStart);
-				_this.bind(_this.obj,'MSPointerUp',_this.touchEnd);
-				_this.bind(_this.obj,'MSPointerMove',_this.touchMove);
+			} else if(Common.isPointer() || Common.isMSPointer()) {
+				_this.bind(_this.obj,'MSPointerDown',_this.mouseStart);
+				_this.bind(_this.obj,'MSPointerUp',_this.mouseEnd);
+				_this.bind(_this.obj,'MSPointerMove',_this.mouseMove);
 				_this.bind(_this.obj,'mousewheel',_this.mouseWheel);
 			} else {
-				var mousewheel = (document.hasOwnProperty('onmousewheel')) ? "mousewheel" : "DOMMouseScroll" ;
-				_this.bind(_this.obj,'mousedown',_this.touchStart);
-				_this.bind(_this.obj,'mouseup',_this.touchEnd);
-				_this.bind(_this.obj,'mousemove',_this.touchMove);
+				mousewheel = (document.hasOwnProperty('onmousewheel')) ? "mousewheel" : "DOMMouseScroll" ;
+				_this.bind(_this.obj,'mousedown',_this.mouseStart);
+				_this.bind(window,'mouseup',_this.mouseEnd);
 				_this.bind(_this.obj,mousewheel,_this.mouseWheel);
 			};
 		},
@@ -268,13 +286,9 @@ ok8008@yeah.net
 			event.preventDefault(); //阻止浏览器默认动作
 			_this.touches = {};
 			_this.objEvent = event;
-			if(isTouch()){
-				_this.touchLoop(event, function (touch) {
-					_this.touches[touch.identifier] = new TouchAction(_this,event,touch);
-				});
-			}else{
-				_this.touches = new TouchAction(_this,event);
-			};
+			_this.touchLoop(event, function (touch) {
+				_this.touches[touch.identifier] = new TouchAction(_this,event,touch);
+			});
 			if (_this.typeFn['start']) {
 				_this.typeFn['start'](event);
 			};
@@ -283,30 +297,19 @@ ok8008@yeah.net
 			var _this = this;
 			event.preventDefault(); //阻止浏览器默认动作
 			_this.objEvent = event;
-			if(isTouch()){
-				_this.touchLoop(event, function (touch) {
-					var touchTarget = _this.touches[touch.identifier];
-					if (touchTarget) {
-						touchTarget.move(_this,touch); //touchMove时执行函数
-					};
-				});
-			}else{
-				if (_this.touches instanceof TouchAction){
-					_this.touches.move(_this,event)
+			_this.touchLoop(event, function (touch) {
+				var touchTarget = _this.touches[touch.identifier];
+				if (touchTarget) {
+					touchTarget.move(_this,touch); //touchMove时执行函数
 				};
-			}
+			});
 		},
 		touchEnd : function (event) {
 			var _this = this;
 			event.preventDefault(); //阻止浏览器默认动作
-			if(isTouch()){
-				_this.touchLoop(event, function (touch) {
-					_this.touchClear(touch, false);
-				});
-			}else{
-				_this.touches.process(_this);
-				_this.touches = {};
-			}
+			_this.touchLoop(event, function (touch) {
+				_this.touchClear(touch, false);
+			});
 			if (_this.typeFn['end']) {
 				_this.typeFn['end'](event);
 			};
@@ -331,6 +334,47 @@ ok8008@yeah.net
 				};
 			};
 			delete _this.touches[touch.identifier];
+		},
+		mouseStart : function (event) {
+			var _this = this;
+			if(!Common.isLeft(event)){
+				//如果不是左键，阻止进程
+				return false;
+			};
+			event.preventDefault(); //阻止浏览器默认动作
+			
+			_this.touches = {};
+			_this.objEvent = event;
+
+			_this.touches = new TouchAction(_this,event); //实例化TouchAction
+			_this.bind(window,'mousemove',_this.mouseMove);//给window绑定mousemove事件
+			if (_this.typeFn['start']) {
+				_this.typeFn['start'](event);
+			};
+		},
+		mouseMove : function (event) {
+			var _this = this;
+			event.preventDefault(); //阻止浏览器默认动作
+			_this.objEvent = event;
+			if (_this.touches instanceof TouchAction){
+				_this.touches.move(_this,event)
+			};
+		},
+		mouseEnd : function (event) {
+			var _this = this;
+			event.preventDefault(); //阻止浏览器默认动作
+			(Common.isIE())? event.cancelBubble = true : event.stopPropagation();//阻止冒泡
+
+			if(!(_this.touches instanceof TouchAction)){
+				return false;
+			};
+			_this.touches.process(_this);
+			_this.touches = {};
+			
+			_this.unbind(window,'mousemove');//取消window的事件绑定
+			if (_this.typeFn['end']) {
+				_this.typeFn['end'](event);
+			};
 		},
 		mouseWheel : function (event) {
 			var _this = this, data = {}, delta = event.wheelDelta ? (event.wheelDelta / 120) : (- event.detail / 3);
@@ -397,16 +441,5 @@ ok8008@yeah.net
 			}
 		}
 	};
-	
-	function isTouch() {
-		return document.hasOwnProperty('ontouchstart');
-	};
-	function isMSPointer() {
-		return window.navigator.msPointerEnabled;
-	};
-	function isPointer() {
-		return window.navigator.pointerEnabled;
-	};	
-	
 	window.jTouch = Touch;
 }());
