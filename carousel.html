@@ -53,7 +53,7 @@ var objTouch = document.getElementById('touch');
 var Touches = JTouch(objTouch);
 
 
-Touches.on('flip',function(evt,data){
+Touches.on('flick',function(evt,data){
 	//轻拂
 	switch(data['direction']){
 		case 'left' :

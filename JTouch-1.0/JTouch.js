@@ -11,7 +11,7 @@ ok8008@yeah.net
 	var TouchAction = function (event, touch, element) {
 		/*
 		函数TouchAction主要针对点击，滑动的处理，手势变换用下面Gesture
-		点击事件：Tap,DoubleTap,LongTap,Swipe(滑动),Flip(轻拂)
+		点击事件：Tap,DoubleTap,LongTap,Swipe(滑动),flick(轻拂)
 		 */
 		this.evt = event;
 		this.touch = touch;
@@ -110,7 +110,7 @@ ok8008@yeah.net
 				data['y'] = offsetY;
 
 				if (new Date() - _this.startTime <= 200) {
-					//时间小于200，动作为轻拂：flip
+					//时间小于200，动作为轻拂：flick
 					if (Math.abs(offsetY) > Math.abs(offsetX)) {
 						data['direction'] = offsetY > 0 ? 'down' : 'up';
 					} else {
@@ -134,7 +134,7 @@ ok8008@yeah.net
 					}
 					 */
 
-					_this.eventType = 'flip';
+					_this.eventType = 'flick';
 				} else {
 					//滑动结束，swipe end
 					data['status'] = 'end';
