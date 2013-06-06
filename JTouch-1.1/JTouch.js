@@ -39,6 +39,7 @@ ok8008@yeah.net
 		this.eventType = null; //初始化事件类型
 		this.startTime = new Date(); //点击开始计时，初始点击时间
 		this.checkLongTap(element); //检查是否是长按
+		this.data = {};
 	};
 	TouchAction.prototype = {
 		getTapType : function () {
@@ -67,13 +68,12 @@ ok8008@yeah.net
 			//手指在对象上滑动
 			var _this = this, offsetX, offsetY;
 			clearTimeout(LongTimeout); //取消长按检测
-
+			
 			_this.currentX = touch.pageX; //获取当前坐标值，pageX为到窗口的距离
 			_this.currentY = touch.pageY;
 
 			offsetX = _this.currentX - _this.startX; //计算手指滑动的横向长度
 			offsetY = _this.currentY - _this.startY; //计算手指滑动的纵向长度
-
 
 			/*
 			move的时候定义事件类型eventType:swipe 或者 hold
@@ -82,25 +82,24 @@ ok8008@yeah.net
 				_this.eventType = 'hold';
 			} else {
 				_this.eventType = 'swipe';
-			}
-
-			var data = {};
+			};
+			
 			if (Math.abs(offsetX) > Math.abs(offsetY) || LastDirect == 'LeftRight') {
 				/*
 				如果上次的移动方向是左右
 				或者横向滑动大于纵向，是左右滑动
 				 */
-				data['direction'] = offsetX > 0 ? 'right' : 'left';
+				_this.data['direction'] = offsetX > 0 ? 'right' : 'left';
 				LastDirect = 'LeftRight';
 			} else {
 				/*
 				纵向滑动大于横向，是上下滑动
 				 */
-				data['direction'] = offsetY > 0 ? 'down' : 'up';
+				_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
 			}
-			data['x'] = offsetX;
-			data['y'] = offsetY;
-			_this.touchCallback(element, data); //执行回调函数
+			_this.data['x'] = offsetX;
+			_this.data['y'] = offsetY;
+			_this.touchCallback(element); //执行回调函数
 		},
 		process : function (element) {
 			//touch结束后执行
@@ -124,50 +123,32 @@ ok8008@yeah.net
 					_this.touchCallback(element);
 				}
 			} else if (Math.abs(offsetY) > 0 || Math.abs(offsetX) > 0) {
-				var data = {};
-				data['x'] = offsetX;
-				data['y'] = offsetY;
+
+				_this.data['x'] = offsetX;
+				_this.data['y'] = offsetY;
 
 				if (new Date() - _this.startTime <= 200) {
 					//时间小于200，动作为轻拂：flip
 					if (Math.abs(offsetY) > Math.abs(offsetX)) {
-						data['direction'] = offsetY > 0 ? 'down' : 'up';
+						_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
 					} else {
-						data['direction'] = offsetX > 0 ? 'right' : 'left';
+						_this.data['direction'] = offsetX > 0 ? 'right' : 'left';
 					}
-					/*
-					如果需要左上，左下，右上，右下
-					删除上面的方向判断，取消这里注释
-					if(Math.abs(offsetY) > Math.abs(offsetX)){
-					if(Math.abs(offsetY/offsetX) <= 1.2){
-					data['direction'] = offsetX > 0 ? 'RightTop': 'LeftTop';
-					}else{
-					data['direction'] = offsetY > 0 ? 'down': 'up';
-					}
-					}else{
-					if(Math.abs(offsetX/offsetY) <= 1.2){
-					data['direction'] = offsetY > 0 ? 'RightBottom': 'LeftBottom';
-					}else{
-					data['direction'] = offsetX > 0 ? 'right': 'left';
-					}
-					}
-					 */
-
 					_this.eventType = 'flip';
-				} else {
+				}else {
 					//滑动结束，swipe end
-					data['status'] = 'end';
-				}
-				_this.touchCallback(element, data);
+					_this.data['status'] = 'end';
+				};
+				_this.touchCallback(element);
 			};
 		},
-		touchCallback : function (element, data) {
+		touchCallback : function (element) {
 			//回调函数
-			var _this = this, data = data || {}, len = this.touch && this.evt.changedTouches.length ;
-			data['fingerNum'] = this.touch && _this.evt.changedTouches.length;
+			var _this = this, len = (this.touch) ? this.evt.changedTouches.length : 1;
+			_this.data['fingerNum'] = len;
 			if (!_this.touch || _this.touch.identifier == _this.evt.changedTouches[len - 1].identifier) {
 				if (element.typeFn[_this.eventType])
-					element.typeFn[_this.eventType](_this.evt, data); //执行函数
+					element.typeFn[_this.eventType](_this.evt, _this.data); //执行函数
 				TapTimes = 0;
 			}
 		}
@@ -188,7 +169,7 @@ ok8008@yeah.net
 				_this.currentData = _this.getData(element); //获取两根手指的坐标
 				diffAngle = _this.getAngle(_this.startData) - _this.getAngle(_this.currentData);
 				diffDistance = _this.getDistance(_this.startData) - _this.getDistance(_this.currentData);
-				console.log(Math.abs(diffDistance));
+
 				if (Math.abs(diffAngle) > 10 || _this.rotateActive) {
 					_this.eventType = 'rotate';
 					_this.data['direction'] = (event.rotation < 0) ? 'left' : 'right';
