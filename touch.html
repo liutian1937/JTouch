@@ -101,9 +101,9 @@ var Touches = JTouch(objTouch);
 		console.log('long tap');
 	}).on('hold',function(evt,data){
 		return false;
-	}).on('flip',function(evt,data){
+	}).on('flick',function(evt,data){
 		//轻拂
-		console.log('flip');
+		console.log('flick');
 		switch(data['direction']){
 			case 'left' :
 				Trans.next();
@@ -137,8 +137,8 @@ var Touches = JTouch(objTouch);
 		if(data['status'] == 'end'){
 			Pic.translate(data['x'],data['y'],'end');
 		}
-	}).on('flip',function(evt,data){
-		//flip效果不完善，需要触发end，否则会闪动
+	}).on('flick',function(evt,data){
+		//flick效果不完善，需要触发end，否则会闪动
 		Pic.end();
 	}).on('pinch',function(evt,data){
 		if(data['status'] == 'end'){

@@ -9,7 +9,7 @@ Please check the demo on your tablet device .
 <ul>
   <li>start,end</li>
   <li>tap,doubletap,longtap,hold</li>
-  <li>flip,swipe</li>
+  <li>flick,swipe</li>
   <li>pinch,rotate</li>
 </ul>
 
@@ -24,8 +24,8 @@ Touches.on('start',function(){
 	  });
 
 
-Touches.on('flip',function(evt,data){
-	console.log('flip');
+Touches.on('flick',function(evt,data){
+	console.log('flick');
 	switch(data['direction']){
 		case 'left' :
 			Trans.next();
