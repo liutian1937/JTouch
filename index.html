@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 
@@ -108,3 +109,115 @@ Need translate.js
 
   </body>
 </html>
+=======
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Jtouch : jTouch -- a  javascript library for touch gestures ." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Jtouch</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/liutian1937/JTouch">View on GitHub</a>
+
+          <h1 id="project_title">Jtouch</h1>
+          <h2 id="project_tagline">jTouch -- a  javascript library for touch gestures .</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/liutian1937/JTouch/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/liutian1937/JTouch/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="jtouch" class="anchor" href="#jtouch"><span class="octicon octicon-link"></span></a>JTouch</h1>
+
+<p>
+A javascript library for touch gestures .<br>
+Please check the demo on your tablet device .
+</p>
+
+<p>
+<img src="http://liutian1937.github.io/JTouch/images/jtouch.jpg"></p>
+
+<h2>
+<a name="support-gestures-one-or-two-fingers" class="anchor" href="#support-gestures-one-or-two-fingers"><span class="octicon octicon-link"></span></a>Support gestures (One Or Two Fingers)</h2>
+
+<ul>
+<li>start,end</li>
+  <li>tap,doubletap,longtap,hold</li>
+  <li>flick,swipe</li>
+  <li>pinch,rotate</li>
+</ul><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<pre>
+var objTouch = document.getElementById('touch');//get object
+var Touches = JTouch(objTouch);//init JTouch
+Touches.on('start',function(){
+          console.log('start');
+      }).on('end',function(){
+          console.log('end');
+      });
+
+
+Touches.on('flick',function(evt,data){
+    console.log('flick');
+    switch(data['direction']){
+        case 'left' :
+            Trans.next();
+            break;
+        case 'right':
+            Trans.prev();
+            break;
+        }
+    });
+
+</pre>
+
+<h2>
+<a name="demo" class="anchor" href="#demo"><span class="octicon octicon-link"></span></a>Demo</h2>
+
+<p>You can check it on your tablet device . (ipad,surface..)</p>
+
+<blockquote>
+<a href="http://liutian1937.github.io/JTouch/touch.html" target="_blank">http://liutian1937.github.io/JTouch/touch.html</a>
+
+Need translate.js album.js
+</blockquote>
+
+<blockquote>
+<a href="http://liutian1937.github.io/JTouch/carousel.html" target="_blank">http://liutian1937.github.io/JTouch/carousel.html</a>
+
+Need translate.js
+</blockquote>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Jtouch maintained by <a href="https://github.com/liutian1937">liutian1937</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
+>>>>>>> 203f9f99a64d9eb4b9e62f789b06bc6d8c4cb393
