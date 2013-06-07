@@ -25,6 +25,9 @@ ok8008@yeah.net
 			if (document.all && e.button === 1 || e.button === 0){
 				return true;
 			};
+		},
+		getTime : function () {
+			return Date.now() || new Date().getTime() ;
 		}
 	};
  	var TouchAction = function (element,event,touch) {
@@ -37,9 +40,13 @@ ok8008@yeah.net
 		this.startX = this.currentX = event.pageX; //初始化点击开始的位置，X
 		this.startY = this.currentY = event.pageY; //初始化点击开始的位置，Y
 		this.eventType = null; //初始化事件类型
-		this.startTime = new Date(); //点击开始计时，初始点击时间
+		this.startTime = Common.getTime(); //点击开始计时，初始点击时间
 		this.checkLongTap(element); //检查是否是长按
 		this.data = {};
+		this.swipeData = {
+			x : this.currentX,
+			y : this.currentY
+		}
 	};
 	TouchAction.prototype = {
 		getTapType : function () {
@@ -66,7 +73,7 @@ ok8008@yeah.net
 		},
 		move : function (element,touch) {
 			//手指在对象上滑动
-			var _this = this, offsetX, offsetY;
+			var _this = this, offsetX, offsetY, timeStamp;
 			clearTimeout(LongTimeout); //取消长按检测
 			
 			_this.currentX = touch.pageX; //获取当前坐标值，pageX为到窗口的距离
@@ -99,11 +106,21 @@ ok8008@yeah.net
 			}
 			_this.data['x'] = offsetX;
 			_this.data['y'] = offsetY;
+			
+			timeStamp = Common.getTime();
+			if(timeStamp - _this.startTime > 300){
+				_this.startTime = timeStamp;
+				_this.swipeData = {
+					x : _this.currentX,
+					y : _this.currentY
+				}
+			}
+			
 			_this.touchCallback(element); //执行回调函数
 		},
 		process : function (element) {
 			//touch结束后执行
-			var _this = this, offsetX, offsetY;
+			var _this = this, offsetX, offsetY, duration;
 			offsetX = _this.currentX - _this.startX; //移动横向距离
 			offsetY = _this.currentY - _this.startY; //移动纵向距离
 
@@ -126,15 +143,24 @@ ok8008@yeah.net
 
 				_this.data['x'] = offsetX;
 				_this.data['y'] = offsetY;
+				
+				duration = Common.getTime() - _this.startTime;
 
-				if (new Date() - _this.startTime <= 200) {
-					//时间小于200，动作为轻拂：flick
-					if (Math.abs(offsetY) > Math.abs(offsetX)) {
-						_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
-					} else {
-						_this.data['direction'] = offsetX > 0 ? 'right' : 'left';
+				if (duration < 300) {
+					
+					if(Math.abs(_this.currentX - _this.swipeData['x'])/duration > 1 || Math.abs(_this.currentY - _this.swipeData['y'])/duration > 1){
+						_this.data['speedX'] = Math.abs(_this.currentX - _this.swipeData['x'])/ duration;
+						_this.data['speedY'] = Math.abs(_this.currentY - _this.swipeData['y'])/ duration;
+						//时间小于300，动作为轻拂：flick
+						if (Math.abs(offsetY) > Math.abs(offsetX)) {
+							_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
+						} else {
+							_this.data['direction'] = offsetX > 0 ? 'right' : 'left';
+						}
+						_this.eventType = 'flick';
+					}else{
+						_this.data['status'] = 'end';
 					}
-					_this.eventType = 'flick';
 				}else {
 					//滑动结束，swipe end
 					_this.data['status'] = 'end';
