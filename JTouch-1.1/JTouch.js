@@ -147,10 +147,8 @@ ok8008@yeah.net
 				duration = Common.getTime() - _this.startTime;
 
 				if (duration < 300) {
-					
-					if(Math.abs(_this.currentX - _this.swipeData['x'])/duration > 1 || Math.abs(_this.currentY - _this.swipeData['y'])/duration > 1){
-						_this.data['speedX'] = Math.abs(_this.currentX - _this.swipeData['x'])/ duration;
-						_this.data['speedY'] = Math.abs(_this.currentY - _this.swipeData['y'])/ duration;
+					_this.data['speed'] = Math.max(Math.abs(_this.currentX - _this.swipeData['x'])/duration,Math.abs(_this.currentY - _this.swipeData['y'])/duration);
+					if(_this.data['speed'] > 0.5){
 						//时间小于300，动作为轻拂：flick
 						if (Math.abs(offsetY) > Math.abs(offsetX)) {
 							_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
