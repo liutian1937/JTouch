@@ -1,4 +1,4 @@
-﻿/*
+﻿﻿/*
 JTouch v1.1  2013-06-04
 https://github.com/liutian1937/JTouch
 ok8008@yeah.net
@@ -120,7 +120,7 @@ ok8008@yeah.net
 		},
 		process : function (element) {
 			//touch结束后执行
-			var _this = this, offsetX, offsetY, duration;
+			var _this = this, offsetX, offsetY;
 			offsetX = _this.currentX - _this.startX; //移动横向距离
 			offsetY = _this.currentY - _this.startY; //移动纵向距离
 
@@ -144,10 +144,10 @@ ok8008@yeah.net
 				_this.data['x'] = offsetX;
 				_this.data['y'] = offsetY;
 				
-				duration = Common.getTime() - _this.startTime;
+				_this.data['time'] = Common.getTime() - _this.startTime;
 
-				if (duration < 300) {
-					_this.data['speed'] = Math.max(Math.abs(_this.currentX - _this.swipeData['x'])/duration,Math.abs(_this.currentY - _this.swipeData['y'])/duration);
+				if (_this.data['time'] < 200) {
+					_this.data['speed'] = Math.max(Math.abs(_this.currentX - _this.swipeData['x'])/_this.data['time'],Math.abs(_this.currentY - _this.swipeData['y'])/_this.data['time']);
 					if(_this.data['speed'] > 0.5){
 						//时间小于300，动作为轻拂：flick
 						if (Math.abs(offsetY) > Math.abs(offsetX)) {
