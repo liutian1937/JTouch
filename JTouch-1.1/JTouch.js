@@ -75,9 +75,8 @@ ok8008@yeah.net
 			//手指在对象上滑动
 			var _this = this, offsetX, offsetY, timeStamp;
 			clearTimeout(LongTimeout); //取消长按检测
-			
-			_this.currentX = touch.screenX || touch.pageX; //获取当前坐标值，pageX为到窗口的距离
-			_this.currentY = touch.screenY || touch.pageY;
+			_this.currentX = _this.touch?touch.screenX:touch.pageX; //获取当前坐标值，pageX为到窗口的距离
+			_this.currentY = _this.touch?touch.screenY:touch.pageY;
 
 			offsetX = _this.currentX - _this.startX; //计算手指滑动的横向长度
 			offsetY = _this.currentY - _this.startY; //计算手指滑动的纵向长度
@@ -355,6 +354,7 @@ ok8008@yeah.net
 			_this.bind(window,'mousemove',_this.mouseMove);//给window绑定mousemove事件
 			if (_this.typeFn['start']) {
 				_this.typeFn['start'](event);
+				console.log('start');
 			};
 		},
 		mouseMove : function (event) {
@@ -362,7 +362,7 @@ ok8008@yeah.net
 			event.preventDefault(); //阻止浏览器默认动作
 			_this.objEvent = event;
 			if (_this.touches instanceof TouchAction){
-				_this.touches.move(_this,event)
+				_this.touches.move(_this,event);
 			};
 		},
 		mouseEnd : function (event) {
