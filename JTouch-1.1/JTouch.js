@@ -28,6 +28,14 @@ ok8008@yeah.net
 		},
 		getTime : function () {
 			return Date.now() || new Date().getTime() ;
+		},
+		stopDefault : function (e) {
+			e = e || window.event;
+			if(e && e.preventDefault){
+			　　e.preventDefault();
+			}else{
+			　　e.returnValue=false;
+			}
 		}
 	};
  	var TouchAction = function (element,event,touch) {
@@ -281,6 +289,7 @@ ok8008@yeah.net
 			} else {
 				mousewheel = (document.hasOwnProperty('onmousewheel')) ? "mousewheel" : "DOMMouseScroll" ;
 				_this.bind(_this.obj,'mousedown',_this.mouseStart);
+				_this.bind(_this.obj,'click',_this.clickFn);
 				_this.bind(window,'mouseup',_this.mouseEnd);
 				_this.bind(_this.obj,mousewheel,_this.mouseWheel);
 			};
@@ -354,7 +363,6 @@ ok8008@yeah.net
 			_this.bind(window,'mousemove',_this.mouseMove);//给window绑定mousemove事件
 			if (_this.typeFn['start']) {
 				_this.typeFn['start'](event);
-				console.log('start');
 			};
 		},
 		mouseMove : function (event) {
@@ -387,6 +395,12 @@ ok8008@yeah.net
 			if (_this.typeFn['mousewheel']) {
 				_this.typeFn['mousewheel'](event,data);
 			};
+		},
+		clickFn : function (event) {
+			var target = event.target || event.srcElement;
+			if (target.tagName === 'A'){
+				Common.stopDefault(event);
+			}
 		},
 		gestureStart : function (event) {
 			var _this = this;
