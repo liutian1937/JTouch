@@ -76,7 +76,7 @@ var Trans = new Translate({
 
 var objTouch = document.getElementById('touch');
 
-var Touches = new JTouch(objTouch);
+var Touches = JTouch(objTouch);
 
 	Touches.on('start',function(){
 		console.log('start');
@@ -131,7 +131,7 @@ var Touches = new JTouch(objTouch);
 	
 	var Pic = new Album(); //实例化Album
 	var imgTouch = document.getElementById('ImgWrap');
-	var newTouch = new jTouch(imgTouch);
+	var newTouch = JTouch(imgTouch);
 	newTouch.on('swipe',function(evt,data){
 		Pic.translate(data['x'],data['y']);
 		if(data['status'] == 'end'){

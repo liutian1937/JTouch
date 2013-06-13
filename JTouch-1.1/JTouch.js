@@ -1,4 +1,4 @@
-﻿/*
+﻿﻿/*
 JTouch v1.1  2013-06-04
 https://github.com/liutian1937/JTouch
 ok8008@yeah.net
@@ -28,6 +28,14 @@ ok8008@yeah.net
 		},
 		getTime : function () {
 			return Date.now() || new Date().getTime() ;
+		},
+		stopDefault : function (e) {
+			e = e || window.event;
+			if(e && e.preventDefault){
+			　　e.preventDefault();
+			}else{
+			　　e.returnValue=false;
+			}
 		}
 	};
  	var TouchAction = function (element,event,touch) {
@@ -37,8 +45,8 @@ ok8008@yeah.net
 		 */
 		this.evt = event;
 		this.touch = touch || undefined;
-		this.startX = this.currentX = event.pageX; //初始化点击开始的位置，X
-		this.startY = this.currentY = event.pageY; //初始化点击开始的位置，Y
+		this.startX = this.currentX = touch?touch.screenX:event.pageX; //初始化点击开始的位置，X
+		this.startY = this.currentY = touch?touch.screenY:event.pageY; //初始化点击开始的位置，Y
 		this.eventType = null; //初始化事件类型
 		this.startTime = Common.getTime(); //点击开始计时，初始点击时间
 		this.checkLongTap(element); //检查是否是长按
@@ -75,9 +83,8 @@ ok8008@yeah.net
 			//手指在对象上滑动
 			var _this = this, offsetX, offsetY, timeStamp;
 			clearTimeout(LongTimeout); //取消长按检测
-			
-			_this.currentX = touch.pageX; //获取当前坐标值，pageX为到窗口的距离
-			_this.currentY = touch.pageY;
+			_this.currentX = _this.touch?touch.screenX:touch.pageX; //获取当前坐标值，pageX为到窗口的距离
+			_this.currentY = _this.touch?touch.screenY:touch.pageY;
 
 			offsetX = _this.currentX - _this.startX; //计算手指滑动的横向长度
 			offsetY = _this.currentY - _this.startY; //计算手指滑动的纵向长度
@@ -120,7 +127,7 @@ ok8008@yeah.net
 		},
 		process : function (element) {
 			//touch结束后执行
-			var _this = this, offsetX, offsetY, duration;
+			var _this = this, offsetX, offsetY;
 			offsetX = _this.currentX - _this.startX; //移动横向距离
 			offsetY = _this.currentY - _this.startY; //移动纵向距离
 
@@ -144,13 +151,11 @@ ok8008@yeah.net
 				_this.data['x'] = offsetX;
 				_this.data['y'] = offsetY;
 				
-				duration = Common.getTime() - _this.startTime;
+				_this.data['time'] = Common.getTime() - _this.startTime;
 
-				if (duration < 300) {
-					
-					if(Math.abs(_this.currentX - _this.swipeData['x'])/duration > 1 || Math.abs(_this.currentY - _this.swipeData['y'])/duration > 1){
-						_this.data['speedX'] = Math.abs(_this.currentX - _this.swipeData['x'])/ duration;
-						_this.data['speedY'] = Math.abs(_this.currentY - _this.swipeData['y'])/ duration;
+				if (_this.data['time'] < 200) {
+					_this.data['speed'] = Math.max(Math.abs(_this.currentX - _this.swipeData['x'])/_this.data['time'],Math.abs(_this.currentY - _this.swipeData['y'])/_this.data['time']);
+					if(_this.data['speed'] > 0.5){
 						//时间小于300，动作为轻拂：flick
 						if (Math.abs(offsetY) > Math.abs(offsetX)) {
 							_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
@@ -228,8 +233,8 @@ ok8008@yeah.net
 			var _this = this, touchList = element.objEvent.touches, ret = [];
 			for (var i = 0; i < touchList.length; i++) {
 				ret.push({
-					x : touchList[i].pageX,
-					y : touchList[i].pageY
+					x : touchList[i].screenX ,
+					y : touchList[i].screenY 
 				});
 			};
 			return ret;
@@ -284,6 +289,7 @@ ok8008@yeah.net
 			} else {
 				mousewheel = (document.hasOwnProperty('onmousewheel')) ? "mousewheel" : "DOMMouseScroll" ;
 				_this.bind(_this.obj,'mousedown',_this.mouseStart);
+				_this.bind(_this.obj,'click',_this.clickFn);
 				_this.bind(window,'mouseup',_this.mouseEnd);
 				_this.bind(_this.obj,mousewheel,_this.mouseWheel);
 			};
@@ -364,7 +370,7 @@ ok8008@yeah.net
 			event.preventDefault(); //阻止浏览器默认动作
 			_this.objEvent = event;
 			if (_this.touches instanceof TouchAction){
-				_this.touches.move(_this,event)
+				_this.touches.move(_this,event);
 			};
 		},
 		mouseEnd : function (event) {
@@ -389,6 +395,12 @@ ok8008@yeah.net
 			if (_this.typeFn['mousewheel']) {
 				_this.typeFn['mousewheel'](event,data);
 			};
+		},
+		clickFn : function (event) {
+			var target = event.target || event.srcElement;
+			if (target.tagName === 'A'){
+				Common.stopDefault(event);
+			}
 		},
 		gestureStart : function (event) {
 			var _this = this;
