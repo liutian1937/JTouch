@@ -54,7 +54,8 @@ ok8008@yeah.net
 		this.swipeData = {
 			x : this.currentX,
 			y : this.currentY
-		}
+		};
+		LastDirect = '';
 	};
 	TouchAction.prototype = {
 		getTapType : function () {
@@ -97,20 +98,29 @@ ok8008@yeah.net
 			} else {
 				_this.eventType = 'swipe';
 			};
+			if(LastDirect != ''){
+				if(LastDirect == 'LeftRight'){
+					_this.data['direction'] = offsetX > 0 ? 'right' : 'left';
+				}else{
+					_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
+				}
+			}else{
+				if (Math.abs(offsetX) > Math.abs(offsetY)) {
+					/*
+					如果上次的移动方向是左右
+					或者横向滑动大于纵向，是左右滑动
+					 */
+					_this.data['direction'] = offsetX > 0 ? 'right' : 'left';
+					LastDirect = 'LeftRight';
+				}else {
+					/*
+					纵向滑动大于横向，是上下滑动
+					 */
+					_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
+					LastDirect = 'UpDown';
+				};
+			};
 			
-			if (Math.abs(offsetX) > Math.abs(offsetY) || LastDirect == 'LeftRight') {
-				/*
-				如果上次的移动方向是左右
-				或者横向滑动大于纵向，是左右滑动
-				 */
-				_this.data['direction'] = offsetX > 0 ? 'right' : 'left';
-				LastDirect = 'LeftRight';
-			} else {
-				/*
-				纵向滑动大于横向，是上下滑动
-				 */
-				_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
-			}
 			_this.data['x'] = offsetX;
 			_this.data['y'] = offsetY;
 			
