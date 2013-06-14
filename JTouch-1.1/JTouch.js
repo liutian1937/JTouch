@@ -99,7 +99,7 @@ ok8008@yeah.net
 				_this.eventType = 'swipe';
 			};
 			if(LastDirect != ''){
-				if(LastDirect == 'LeftRight'){
+				if(LastDirect == 'Horizontal'){
 					_this.data['direction'] = offsetX > 0 ? 'right' : 'left';
 				}else{
 					_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
@@ -111,13 +111,13 @@ ok8008@yeah.net
 					或者横向滑动大于纵向，是左右滑动
 					 */
 					_this.data['direction'] = offsetX > 0 ? 'right' : 'left';
-					LastDirect = 'LeftRight';
+					LastDirect = 'Horizontal';
 				}else {
 					/*
 					纵向滑动大于横向，是上下滑动
 					 */
 					_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
-					LastDirect = 'UpDown';
+					LastDirect = 'Vertical';
 				};
 			};
 			
