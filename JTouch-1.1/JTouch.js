@@ -99,11 +99,7 @@ ok8008@yeah.net
 				_this.eventType = 'swipe';
 			};
 			if(LastDirect != ''){
-<<<<<<< HEAD
 				if(LastDirect == 'Horizontal'){
-=======
-				if(LastDirect == 'LeftRight'){
->>>>>>> 9f79cba1157a55239b48ec63bf518ea866a1101b
 					_this.data['direction'] = offsetX > 0 ? 'right' : 'left';
 				}else{
 					_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
@@ -115,21 +111,13 @@ ok8008@yeah.net
 					或者横向滑动大于纵向，是左右滑动
 					 */
 					_this.data['direction'] = offsetX > 0 ? 'right' : 'left';
-<<<<<<< HEAD
 					LastDirect = 'Horizontal';
-=======
-					LastDirect = 'LeftRight';
->>>>>>> 9f79cba1157a55239b48ec63bf518ea866a1101b
 				}else {
 					/*
 					纵向滑动大于横向，是上下滑动
 					 */
 					_this.data['direction'] = offsetY > 0 ? 'down' : 'up';
-<<<<<<< HEAD
 					LastDirect = 'Vertical';
-=======
-					LastDirect = 'UpDown';
->>>>>>> 9f79cba1157a55239b48ec63bf518ea866a1101b
 				};
 			};
 			
@@ -173,11 +161,7 @@ ok8008@yeah.net
 				_this.data['x'] = offsetX;
 				_this.data['y'] = offsetY;
 				
-<<<<<<< HEAD
 				_this.data['time'] = TouchCommon.getTime() - _this.startTime;
-=======
-				_this.data['time'] = Common.getTime() - _this.startTime;
->>>>>>> 9f79cba1157a55239b48ec63bf518ea866a1101b
 
 				if (_this.data['time'] < 200) {
 					_this.data['speed'] = Math.max(Math.abs(_this.currentX - _this.swipeData['x'])/_this.data['time'],Math.abs(_this.currentY - _this.swipeData['y'])/_this.data['time']);
@@ -432,17 +416,10 @@ ok8008@yeah.net
 			};
 		},
 		clickFn : function (event) {
-<<<<<<< HEAD
 			var _this = this, target = event.target || event.srcElement;
 			if(_this.stopDefault){
 				TouchCommon.stopDefault(event);
 			};
-=======
-			var target = event.target || event.srcElement;
-			if (target.tagName === 'A'){
-				Common.stopDefault(event);
-			}
->>>>>>> 9f79cba1157a55239b48ec63bf518ea866a1101b
 		},
 		gestureStart : function (event) {
 			var _this = this;
