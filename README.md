@@ -16,7 +16,11 @@ Please check the demo on your tablet device .
 <h2>Usage</h2>
 <pre>
 var objTouch = document.getElementById('touch');//get object
+<<<<<<< HEAD
 var Touches = JTouch(objTouch);//init jTouch
+=======
+var Touches = JTouch(objTouch);//init JTouch
+>>>>>>> 7c5a09740aa259bb558c4dcffede65441f35c047
 Touches.on('start',function(){
 		  console.log('start');
 	  }).on('end',function(){

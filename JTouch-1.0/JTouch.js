@@ -11,7 +11,15 @@ ok8008@yeah.net
 	var TouchAction = function (event, touch, element) {
 		/*
 		函数TouchAction主要针对点击，滑动的处理，手势变换用下面Gesture
+<<<<<<< HEAD
 		点击事件：Tap,DoubleTap,LongTap,Swipe(滑动),Flick(轻拂)
+=======
+<<<<<<< HEAD
+		点击事件：Tap,DoubleTap,LongTap,Swipe(滑动),flick(轻拂)
+=======
+		点击事件：Tap,DoubleTap,LongTap,Swipe(滑动),Flick(轻拂)
+>>>>>>> dc0431e93b5753e989d77b9121a7d92f82ab2c7d
+>>>>>>> 7c5a09740aa259bb558c4dcffede65441f35c047
 		 */
 		this.evt = event;
 		this.touch = touch;

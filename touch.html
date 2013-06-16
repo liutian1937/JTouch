@@ -131,7 +131,11 @@ var Touches = JTouch(objTouch);
 	
 	var Pic = new Album(); //实例化Album
 	var imgTouch = document.getElementById('ImgWrap');
+<<<<<<< HEAD
 	var newTouch = new jTouch(imgTouch);
+=======
+	var newTouch = JTouch(imgTouch);
+>>>>>>> 7c5a09740aa259bb558c4dcffede65441f35c047
 	newTouch.on('swipe',function(evt,data){
 		Pic.translate(data['x'],data['y']);
 		if(data['status'] == 'end'){
