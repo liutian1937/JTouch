@@ -8,7 +8,7 @@ ok8008@yeah.net
 	TapTimeout,
 	LongTimeout,
 	LastDirect = '';
-	var Common = {
+	var TouchCommon = {
 		isTouch : function () {
 			return document.hasOwnProperty('ontouchstart');
 		},
@@ -48,7 +48,7 @@ ok8008@yeah.net
 		this.startX = this.currentX = touch?touch.screenX:event.pageX; //初始化点击开始的位置，X
 		this.startY = this.currentY = touch?touch.screenY:event.pageY; //初始化点击开始的位置，Y
 		this.eventType = null; //初始化事件类型
-		this.startTime = Common.getTime(); //点击开始计时，初始点击时间
+		this.startTime = TouchCommon.getTime(); //点击开始计时，初始点击时间
 		this.checkLongTap(element); //检查是否是长按
 		this.data = {};
 		this.swipeData = {
@@ -124,7 +124,7 @@ ok8008@yeah.net
 			_this.data['x'] = offsetX;
 			_this.data['y'] = offsetY;
 			
-			timeStamp = Common.getTime();
+			timeStamp = TouchCommon.getTime();
 			if(timeStamp - _this.startTime > 300){
 				_this.startTime = timeStamp;
 				_this.swipeData = {
@@ -161,7 +161,7 @@ ok8008@yeah.net
 				_this.data['x'] = offsetX;
 				_this.data['y'] = offsetY;
 				
-				_this.data['time'] = Common.getTime() - _this.startTime;
+				_this.data['time'] = TouchCommon.getTime() - _this.startTime;
 
 				if (_this.data['time'] < 200) {
 					_this.data['speed'] = Math.max(Math.abs(_this.currentX - _this.swipeData['x'])/_this.data['time'],Math.abs(_this.currentY - _this.swipeData['y'])/_this.data['time']);
@@ -276,13 +276,18 @@ ok8008@yeah.net
 			this.typeFn[type] = callback; //给typeFn添加对应的事件
 			return this;
 		},
+		stopEvent : function (){
+			//是否阻止默认事件
+			this.stopDefault = true;
+			return this;
+		},
 		init : function () {
 			var _this = this, mousewheel;
 			_this.touches = {}; //touch对象哈希表
 			_this.typeFn = {}; //点击类型哈希表
 			_this.gesture = null;
 			_this.handleHash = {};
-			if(Common.isTouch()){
+			if(TouchCommon.isTouch()){
 				//是否支持touch事件
 				_this.bind(_this.obj,'touchstart',_this.touchStart);
 				_this.bind(_this.obj,'touchmove',_this.touchMove);
@@ -291,7 +296,7 @@ ok8008@yeah.net
 				_this.bind(_this.obj,'gesturestart',_this.gestureStart);
 				_this.bind(_this.obj,'gesturechange',_this.gestureChange);
 				_this.bind(_this.obj,'gestureend',_this.gestureEnd);
-			} else if(Common.isPointer() || Common.isMSPointer()) {
+			} else if(TouchCommon.isPointer() || TouchCommon.isMSPointer()) {
 				_this.bind(_this.obj,'MSPointerDown',_this.mouseStart);
 				_this.bind(_this.obj,'MSPointerUp',_this.mouseEnd);
 				_this.bind(_this.obj,'MSPointerMove',_this.mouseMove);
@@ -306,7 +311,9 @@ ok8008@yeah.net
 		},
 		touchStart : function (event) {
 			var _this = this;
-			event.preventDefault(); //阻止浏览器默认动作
+			if(_this.stopDefault){
+				TouchCommon.stopDefault(event);
+			};
 			_this.touches = {};
 			_this.objEvent = event;
 			_this.touchLoop(event, function (touch) {
@@ -329,7 +336,9 @@ ok8008@yeah.net
 		},
 		touchEnd : function (event) {
 			var _this = this;
-			event.preventDefault(); //阻止浏览器默认动作
+			if(_this.stopDefault){
+				TouchCommon.stopDefault(event);
+			};
 			_this.touchLoop(event, function (touch) {
 				_this.touchClear(touch, false);
 			});
@@ -360,7 +369,7 @@ ok8008@yeah.net
 		},
 		mouseStart : function (event) {
 			var _this = this;
-			if(!Common.isLeft(event)){
+			if(!TouchCommon.isLeft(event)){
 				//如果不是左键，阻止进程
 				return false;
 			};
@@ -386,7 +395,7 @@ ok8008@yeah.net
 		mouseEnd : function (event) {
 			var _this = this;
 			event.preventDefault(); //阻止浏览器默认动作
-			(Common.isIE())? event.cancelBubble = true : event.stopPropagation();//阻止冒泡
+			(TouchCommon.isIE())? event.cancelBubble = true : event.stopPropagation();//阻止冒泡
 
 			if(!(_this.touches instanceof TouchAction)){
 				return false;
@@ -407,10 +416,10 @@ ok8008@yeah.net
 			};
 		},
 		clickFn : function (event) {
-			var target = event.target || event.srcElement;
-			if (target.tagName === 'A'){
-				Common.stopDefault(event);
-			}
+			var _this = this, target = event.target || event.srcElement;
+			if(_this.stopDefault){
+				TouchCommon.stopDefault(event);
+			};
 		},
 		gestureStart : function (event) {
 			var _this = this;
